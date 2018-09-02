@@ -44,6 +44,8 @@ MRichTextEdit::MRichTextEdit(QWidget *parent) : QWidget(parent) {
     m_lastBlockList = 0;
     f_textedit->setTabStopWidth(40);
 
+    connect(f_textedit, &MTextEdit::textChanged, this, &MRichTextEdit::textChanged);
+    
     connect(f_textedit, SIGNAL(currentCharFormatChanged(QTextCharFormat)),
             this,     SLOT(slotCurrentCharFormatChanged(QTextCharFormat)));
     connect(f_textedit, SIGNAL(cursorPositionChanged()),
@@ -562,18 +564,6 @@ void MRichTextEdit::indent(int delta) {
         }
     cursor.setBlockFormat(bfmt);
     cursor.endEditBlock();
-}
-
-void MRichTextEdit::setText(const QString& text) {
-    if (text.isEmpty()) {
-        setPlainText(text);
-        return;
-        }
-    if (text[0] == '<') {
-        setHtml(text);
-      } else {
-        setPlainText(text);
-        }
 }
 
 void MRichTextEdit::insertImage() {
